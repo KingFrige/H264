@@ -1,0 +1,3 @@
+default: Vh264i
+
+include Vh264i.mk

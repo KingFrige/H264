@@ -19,7 +19,7 @@ reg [0:20] i;
 reg [31:0] pc_count;
 initial begin
   
-  $readmemh("test.dat",mem);
+  $readmemh("../../tb/test.dat",mem);
   for(i=0;i<21'd200000;i=i+1)
     BS_buffer[64*i +: 64] <= mem[i];
  
@@ -32,7 +32,7 @@ initial begin
 	
 	#100 reset_n = 1'b0;
 	#100 reset_n = 1'b1;
-	//#3000000000 $stop;
+	#3000000000 $stop;
 	end
 
 

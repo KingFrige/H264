@@ -1,0 +1,92 @@
+IVERILOG=iverilog
+
+BINS=tb_sim 
+VFLAGS=-g2005-sv -Wall -I../../code -I../../tb
+
+ifdef DATA_BITS
+ODATA_BITS = -Ptb_sim.DATA_BITS=$(DATA_BITS)
+endif
+
+ifdef BITS
+OBITS = -Ptb_sim.BITS=$(BITS)
+endif
+
+ifdef T
+OT = -Ptb_sim.T=$(T)
+endif
+
+ifdef SEED
+OSEED = -Ptb_sim.SEED=$(SEED)
+endif
+
+ifdef OPTION
+OOPTION = -Ptb_sim.OPTION=\"$(OPTION)\"
+endif
+
+ifdef REG_RATIO
+OREG_RATIO = -Ptb_sim.REG_RATIO=$(REG_RATIO)
+endif
+
+all: run
+V=\
+../../code/Bitstream_buffer.v  \
+../../code/BitStream_parser_FSM.v  \
+../../code/bs_decoder.v  \
+../../code/cavlc_consumed_bits_decoding.v  \
+../../code/cavlc_decoder.v  \
+../../code/CodedBlockPattern_decoding.v  \
+../../code/deblocking_filter.v  \
+../../code/dependent_variable_decoding.v  \
+../../code/DF_decoder.v  \
+../../code/df_mem_ctrl.v  \
+../../code/df_qp_mem_ctrl.v  \
+../../code/df_rw.v  \
+../../code/end_of_blk_decoding.v  \
+../../code/exp_golomb_decoding.v  \
+../../code/fifo_1depth.v  \
+../../code/h264i.v  \
+../../code/h264_top.v  \
+../../code/heading_one_detector.v  \
+../../code/IDCT_4.v  \
+../../code/Inter_average.v  \
+../../code/Inter_calculate.v  \
+../../code/Inter_mv_decodor.v  \
+../../code/Inter_pred.v  \
+../../code/Inter_read.v  \
+../../code/Intra4x4_PredMode_decoding.v  \
+../../code/intra4x4_rw.v  \
+../../code/intra_pred_16.v  \
+../../code/intra_pred_4x4_normal.v  \
+../../code/level_decoding.v  \
+../../code/MV_decoding.v  \
+../../code/nC_decoding.v  \
+../../code/NumCoeffTrailingOnes_decoding.v  \
+../../code/pc_decoding.v  \
+../../code/Picidx_decoding.v  \
+../../code/POC_decoding.v  \
+../../code/pred_weigth_table.v  \
+../../code/QP_decoding.v  \
+../../code/ram_Synch.v  \
+../../code/ram.v  \
+../../code/refidx_decoding.v  \
+../../code/remove_03.v  \
+../../code/run_decoding.v  \
+../../code/sample_reconstruct.v  \
+../../code/spram2.v  \
+../../code/spram_wait.v  \
+../../code/syntax_decoding.v  \
+../../code/total_zeros_decoding.v  \
+  \
+../../tb/a_tb.v 
+
+tb_sim: $(V)
+	$(IVERILOG) $(VFLAGS) $^ -o $@ $(ODATA_BITS) $(OBITS) $(OT) $(OSEED) $(OOPTION) $(OREG_RATIO)
+
+run: tb_sim
+	./tb_sim 
+
+open-wave: run
+	gtkwave wave.vcd
+
+clean:
+	-rm -f $(BINS) *.vcd *.out wave.wvw
