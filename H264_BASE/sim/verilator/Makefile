@@ -9,7 +9,7 @@ endif
 
 # VERILATOR_FLAGS += --CFLAGS "-include verilator.h"
 # Generate C++ in executable form
-VERILATOR_FLAGS += -cc --exe --binary
+VERILATOR_FLAGS += -cc --exe
 # Generate makefile dependencies (not shown as complicates the Makefile)
 #VERILATOR_FLAGS += -MMD
 # Optimize
@@ -29,6 +29,8 @@ VERILATOR_FLAGS += --coverage
 
 # Input files for Verilator
 VERILATOR_INPUT = -f input.vc -f flist --top-module h264i
+
+default: sim
 
 test-build:
 	$(VERILATOR) $(VERILATOR_FLAGS) $(VERILATOR_INPUT)
